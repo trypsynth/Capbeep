@@ -1,29 +1,30 @@
 ﻿EnableExplicit
 
-Macro TimerElapsed(_Timer): ElapsedMilliseconds() - _Timer: EndMacro
-Macro TimerRestart(_Timer): _Timer = ElapsedMilliseconds(): EndMacro
+Macro TimerElapsed(_Timer) : ElapsedMilliseconds() - _Timer : EndMacro
+Macro TimerRestart(_Timer) : _Timer = ElapsedMilliseconds() : EndMacro
 
-Global BeepTimer
-Global BeepTime = 1000
-Global Hook, hWnd
+Global BeepTimer.i
+Global BeepTime.i = 1000
+Global.i Hook, HWnd
 
 ; Hook callback to automatically preselect the text in an InputRequester.
-Procedure HookCB(uMsg , wParam, lParam)
-	Protected hEdit
-	Select uMsg
+Procedure HookCB(UMsg.i, WParam.i, LParam.i)
+	Protected HEdit.i
+	Select UMsg
 		Case #HCBT_ACTIVATE
-			hWnd = wparam
+			HWnd = WParam
 		Case #HCBT_CREATEWND
-			If hwnd
-				hEdit = FindWindowEx_(hwnd, #Null, "Edit", #Null)
-				SendMessage_(hEdit,#EM_SETSEL,0,-1)
+			If HWnd
+				HEdit = FindWindowEx_(HWnd, #Null, "Edit", #Null)
+				SendMessage_(HEdit, #EM_SETSEL, 0, -1)
 			EndIf    
 	EndSelect  
 	ProcedureReturn #False
 EndProcedure
 
 Procedure MakeSingleInstance(AppID$)
-	Protected hMutex = OpenMutex_(#MUTEX_ALL_ACCESS, 0, AppID$ + "_IsAlreadyRunning")
+	Protected HMutex.i
+	HMutex = OpenMutex_(#MUTEX_ALL_ACCESS, 0, AppID$ + "_IsAlreadyRunning")
 	If Not hMutex
 		hMutex = CreateMutex_(0, 0, AppID$ + "_IsAlreadyRunning")
 	Else
@@ -33,10 +34,11 @@ Procedure MakeSingleInstance(AppID$)
 EndProcedure			
 
 Procedure Configure()
+	Protected Time$, Time.i
 	Hook = SetWindowsHookEx_( #WH_CBT, @ HookCB() , 0, GetCurrentThreadId_ ())
-	Protected Time$ = InputRequester("Beep time", "Enter your desired beep time (in milliseconds)", Str(BeepTime))
+	Time$ = InputRequester("Beep time", "Enter your desired beep time (in milliseconds)", Str(BeepTime))
 	UnhookWindowsHookEx_ (Hook)
-	Protected Time = Val(Time$)
+	Time = Val(Time$)
 	If Time > 0
 		BeepTime = Time
 		OpenPreferences("capbeep.ini")
