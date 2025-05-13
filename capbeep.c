@@ -37,6 +37,6 @@ LRESULT CALLBACK keyboard_proc(int code, WPARAM wp, LPARAM lp) {
 }
 
 DWORD WINAPI beep_function(LPVOID param) {
-	Beep(750, 200);
+	Beep(550, 30);
 	return 0;
 }
