@@ -14,7 +14,7 @@ HHOOK hook;
 LRESULT CALLBACK keyboard_proc(int code, WPARAM wp, LPARAM lp);
 DWORD WINAPI beep_function(LPVOID param);
 
-int WINAPI WinMain(HINSTANCE instance, HINSTANCE prev_instance, PSTR cmd_line, int show) {
+int main() {
 	hook = SetWindowsHookEx(WH_KEYBOARD_LL, keyboard_proc, NULL, 0);
 	if (hook == NULL) {
 		MessageBox(NULL, "Failed to install keyboard hook!", "Error", MB_ICONERROR);
