@@ -1,6 +1,6 @@
 CC = cl
 CFLAGS = /O2 /GS- /Gf /Gr /kernel- /Zl
-LDFLAGS = /NODEFAULTLIB /ENTRY:main user32.lib kernel32.lib
+LDFLAGS = /subsystem:windows /NODEFAULTLIB /ENTRY:main user32.lib kernel32.lib
 TARGET = capbeep.exe
 SRCS = capbeep.c
 OBJS = $(SRCS:.c=.obj)
