@@ -31,7 +31,9 @@ int main() {
 
 LRESULT CALLBACK keyboard_proc(int code, WPARAM wp, LPARAM lp) {
 	if (code == HC_ACTION && wp == WM_KEYDOWN) {
-		if (GetKeyState(VK_CAPITAL) & 0x0001) CreateThread(NULL, 0, beep_function, NULL, 0, NULL);
+		KBDLLHOOKSTRUCT* kbd = (KBDLLHOOKSTRUCT*)lp;
+		DWORD vk = kbd->vkCode;
+		if ((GetKeyState(VK_CAPITAL) & 0x0001) && (vk >= 'A' && vk <= 'Z')) CreateThread(NULL, 0, beep_function, NULL, 0, NULL);
 	}
 	return CallNextHookEx(hook, code, wp, lp);
 }
